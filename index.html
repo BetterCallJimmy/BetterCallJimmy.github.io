@@ -78,6 +78,358 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Git日志提交规范" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/15/Git%E6%97%A5%E5%BF%97%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/" class="article-date">
+  <time class="dt-published" datetime="2022-08-15T03:28:36.000Z" itemprop="datePublished">2022-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%B7%A5%E5%85%B7/">技术工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/08/15/Git%E6%97%A5%E5%BF%97%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">Git日志提交规范</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="规范Git-Commit有利于后续接手开发的人员"><a href="#规范Git-Commit有利于后续接手开发的人员" class="headerlink" title="规范Git Commit有利于后续接手开发的人员"></a><strong>规范Git Commit有利于后续接手开发的人员</strong></h2><h3 id="约定式提交规范-Conventional-Commits"><a href="#约定式提交规范-Conventional-Commits" class="headerlink" title="约定式提交规范(Conventional Commits)"></a>约定式提交规范(Conventional Commits)</h3><p><a target="_blank" rel="noopener" href="https://www.conventionalcommits.org/zh-hans/v1.0.0/">https://www.conventionalcommits.org/zh-hans/v1.0.0/</a><br>原文：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;type&gt;[optional scope]: &lt;description&gt;</span><br><span class="line"></span><br><span class="line">[optional body]</span><br><span class="line"></span><br><span class="line">[optional footer(s)] </span><br></pre></td></tr></table></figure>
+
+<p>译文：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;类型&gt;[可选 范围]: &lt;描述&gt;</span><br><span class="line"></span><br><span class="line">[可选 正文]</span><br><span class="line"></span><br><span class="line">[可选 脚注]</span><br></pre></td></tr></table></figure>
+<p><strong>类型（type）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">feat:  类型为 feat 的提交表示在代码库中新增了一个功能（这和语义化版本中的 MINOR 相对应）。</span><br><span class="line">fix：类型为 fix 的 提交表示在代码库中修复了一个 bug （这和语义化版本中的 PATCH 相对应）。</span><br><span class="line">docs: 只是更改文档。</span><br><span class="line">style: 不影响代码含义的变化（空白、格式化、缺少分号等）。</span><br><span class="line">refactor: 代码重构，既不修复错误也不添加功能。</span><br><span class="line">perf: 改进性能的代码更改。</span><br><span class="line">test: 添加确实测试或更正现有的测试。</span><br><span class="line">build: 影响构建系统或外部依赖关系的更改（示例范围：gulp、broccoli、NPM）。</span><br><span class="line">ci: 更改持续集成文件和脚本（示例范围：Travis、Circle、BrowserStack、SauceLabs）。</span><br><span class="line">chore: 其他不修改src或test文件。</span><br><span class="line">revert: commit 回退。</span><br></pre></td></tr></table></figure>
+<p><strong>范围（scope）</strong><br>可选作用域用于说明 commit 影响的范围，比如数据层、控制层、视图层、模块名等等，视项目不同而不同。可以为提交类型添加一个围在圆括号内的作用域，以为其提供额外的上下文信息。<br>例如feat(order): 订单更新；涉及到多个模块可以用*代替。</p>
+<p><strong>Jira ID</strong><br>Jira ID 可以是Jira上对应问题的ID，比如：故事ID、工单ID、任务ID、缺陷ID等，Commit Message 指定ID后，Jira会自动将提交记录与Jira问题关联，这样便于通过jira查看解决问题的代码。<br>例如feat(Controller): #JIRA-001 用户查询接口开发<br>注意使用英文冒号，冒号后面一个空格。</p>
+<p><strong>BREAKING CHANGE</strong><br>在可选的正文或脚注的起始位置带有 BREAKING CHANGE: 的提交，表示引入了破坏性 API 变更（这和语义化版本中的 MAJOR 相对应）。 破坏性变更可以是任意类型提交的一部分。</p>
+<p>IDEA使用Git Commit Template插件（<a target="_blank" rel="noopener" href="https://plugins.jetbrains.com/plugin/9861-git-commit-template%EF%BC%89%E6%AF%94%E8%BE%83%E6%96%B9%E4%BE%BF">https://plugins.jetbrains.com/plugin/9861-git-commit-template）比较方便</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.jswkw.top/2022/08/15/Git%E6%97%A5%E5%BF%97%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/" data-id="cl6u8qjh30000f8uv9wvnahv1" data-title="Git日志提交规范" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Git/" rel="tag">Git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-gitlab分支管理实践" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/" class="article-date">
+  <time class="dt-published" datetime="2022-08-15T02:10:33.000Z" itemprop="datePublished">2022-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%B7%A5%E5%85%B7/">技术工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/">gitlab分支管理实践</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="/RackMultipart20220815-1-lv4jgj_html_6a4f1b8b5ada7b41.gif" alt="Shape1"></p>
+<h1 id="Gitlab分支管理实践"><a href="#Gitlab分支管理实践" class="headerlink" title="Gitlab分支管理实践"></a><strong>Gitlab分支管理实践</strong></h1><ol>
+<li><strong>整体流程图</strong></li>
+</ol>
+<p><img src="/RackMultipart20220815-1-lv4jgj_html_5f80dc7b858dcfe5.png"></p>
+<ol start="2">
+<li><strong>分支规约</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>分支</strong></th>
+<th><strong>分支命名</strong></th>
+<th><strong>分支描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能开发分支</td>
+<td>origin&#x2F;feature_${feature}</td>
+<td>1. 用于承载具体的功能开发，基于最新的master分支检出<br>1. 命名规范：feature_{日期}_{功能}。如：feature_20220809_login</td>
+</tr>
+<tr>
+<td>开发集成分支</td>
+<td>origin&#x2F;develop</td>
+<td>1. 在开发环境集成各个功能分支，用于开发自测或联调</td>
+</tr>
+<tr>
+<td>测试&#x2F;发布集成分支</td>
+<td>origin&#x2F;release_{release_date}</td>
+<td>1. 在测试环境集成各个功能分支，用于测试人员测试<br>2. UAT环境验收（部分功能）：如果需要提前验收部分功能，则部署到UAT环境验收<br>3. 可能同时存在多个（即n * release），支持多版本并行测试（需要多套测试环境）<br>4. 命名规范：release_{发布日期}。如：release_20220801、release_20220801_1（部分功能无法上线，则重新检出）</td>
+</tr>
+<tr>
+<td>热修复分支</td>
+<td>origin&#x2F;hotfix_${hotfix}</td>
+<td>1. 用于修复生产环境Bug，基于master分支或指定Tag版本检出<br>2. 命名规范：hotfix_{日期}_{修复功能}。如：hotfix_20220801_loginBug</td>
+</tr>
+<tr>
+<td>主干分支</td>
+<td>origin&#x2F;master</td>
+<td>1. master分支代表项目的基线，不允许直接修改<br>2. UAT环境验收（全部功能）：全部功能测试通过后，将release_xxx合并到master分支，部署master到UAT环境验收<br>3. 生产环境发布：基于当前master分支打tag，审批发布上线<br>4. Tag命名规范：v{版本号}。如：v1.0.1</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li><strong>常规流程</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>序号</strong></th>
+<th><strong>阶段</strong></th>
+<th><strong>Gitlab</strong> <strong>角色</strong></th>
+<th><strong>组织角色</strong></th>
+<th><strong>操作</strong> <strong>&#x2F;</strong> <strong>事项</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>迭代开始</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>基于最新master检出新的发布分支：release_xxx（可以多个）</td>
+</tr>
+<tr>
+<td>Developers</td>
+<td>开发人员</td>
+<td>基于最新master检出新的开发分支：feature_xxx（多人可共用一个）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>开发阶段</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>在feature分支开发，开发完成后，将feature分支合并到develop分支，部署develop到开发环境自测或联调</td>
+</tr>
+<tr>
+<td>3</td>
+<td>提测阶段</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>在Gitlab发起Merge Request，合并到release_xxx分支</td>
+</tr>
+<tr>
+<td>4</td>
+<td>代码审查&amp;合并</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>完成Code Review并合并到release_xxx分支</td>
+</tr>
+<tr>
+<td>5</td>
+<td>测试阶段</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>部署release_xxx分支到测试环境测试（支持多版本并行测试，需要多套测试环境）</td>
+</tr>
+<tr>
+<td>6</td>
+<td>UAT验收</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>将release_xxx合并到master，部署master到UAT环境</td>
+</tr>
+<tr>
+<td>Other</td>
+<td>产品或业务</td>
+<td>产品或业务在UAT环境验收</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>发布上线</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>基于当前master分支打tag，发起生产环境部署审批，完成发布上线</td>
+</tr>
+<tr>
+<td>8</td>
+<td>收尾阶段</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>将master分支合并到develop分支以及下一发布分支或开发分支（如果存在的话）</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li><strong>热修复流程</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>序号</strong></th>
+<th><strong>阶段</strong></th>
+<th><strong>Gitlab角色</strong></th>
+<th><strong>组织角色</strong></th>
+<th><strong>操作</strong> <strong>&#x2F;</strong> <strong>事项</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>开发修复</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>基于当前master检出热修复分支hotfix_xxx，修复后合并到develop分支，部署develop到开发环境自测或联调</td>
+</tr>
+<tr>
+<td>2</td>
+<td>开发提测</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>通知测试人员部署hotfix_xxx分支测试</td>
+</tr>
+<tr>
+<td>3</td>
+<td>测试阶段</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>部署hotfix_xxx分支到测试环境测试</td>
+</tr>
+<tr>
+<td>4</td>
+<td>合并请求</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>在Gitlab发起Merge Request，合并到master分支</td>
+</tr>
+<tr>
+<td>5</td>
+<td>代码审查&amp;合并</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>完成Code Review并合并到master分支</td>
+</tr>
+<tr>
+<td>6</td>
+<td>UAT验收</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>部署master分支到UAT环境验收</td>
+</tr>
+<tr>
+<td></td>
+<td>Other</td>
+<td>产品或业务</td>
+<td>产品或业务在UAT环境验收</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>发布上线</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>基于当前master分支打tag，发起生产环境部署审批，完成发布上线</td>
+</tr>
+<tr>
+<td>8</td>
+<td>收尾阶段</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>将master分支合并到develop分支以及下一发布分支或开发分支（如果存在的话）</td>
+</tr>
+</tbody></table>
+<ol start="5">
+<li><strong>规约</strong></li>
+</ol>
+<p>5.1 <strong>Git</strong>  <strong>提交日志</strong></p>
+<ol>
+<li><p>Git提交必须编写commit message，否则不允许提交</p>
+</li>
+<li><p>Git提交日志必须符合【<a target="_blank" rel="noopener" href="https://wiki.szzhijing.com/pages/viewpage.action?pageId=24383064"><strong>Git</strong>** 日志规范**</a><strong>】</strong>，否则不允许合并（直接打回Merge Request）</p>
+</li>
+</ol>
+<p>5.2 <strong>版本命名规范</strong></p>
+<ol>
+<li><p>版本号规范：采用GNU风格版本号，参考【<a target="_blank" rel="noopener" href="https://wiki.szzhijing.com/pages/viewpage.action?pageId=21576376"><strong>版本命名规范</strong></a>】。第三位作为特性或修复版本，如1.0.1、1.0.2…</p>
+</li>
+<li><p>Tag命名规范：v{版本号}，如：v1.0.1</p>
+</li>
+</ol>
+<p>5.3 <strong>分支合并规范</strong></p>
+<ol>
+<li><p>【禁止】将测试发布分支release_xxx和develop分支合并回feature分支</p>
+</li>
+<li><p>【推荐】每次发版后，及时将master合并回develop和feature分支</p>
+</li>
+<li><p>【推荐】feature分支合并到master并上线后即可删除</p>
+</li>
+<li><p><strong>项目设置</strong></p>
+</li>
+</ol>
+<p>6.1 <strong>角色分配</strong></p>
+<ol>
+<li>项目组长统一分配组员角色，指定Maintainer角色人员（测试人员全部设置为Maintainer）</li>
+</ol>
+<p>6.2 <strong>分支保护</strong></p>
+<ol>
+<li><p>测试&#x2F;发布分支（release_*）：只允许项目maintainer合并和推送</p>
+</li>
+<li><p>生产分支（master）：只允许项目maintainer合并和推送</p>
+</li>
+</ol>
+<p><img src="/RackMultipart20220815-1-lv4jgj_html_a1c56e63bc13fc60.png"></p>
+<p>6.3 <strong>Tag保护</strong></p>
+<ol>
+<li>只允许项目Maintainer能创建tag（进而触发生产环境审批&#x2F;发布）</li>
+</ol>
+<p><img src="/RackMultipart20220815-1-lv4jgj_html_9589eb41dc8925c4.png"></p>
+<ol start="7">
+<li><strong>常见问题</strong></li>
+</ol>
+<p>1、如何解决多个功能，需要先后发布到UAT环境验收的问题？</p>
+<p>方案：直接将当前迭代发布分支release_xxx，部署到UAT环境验收</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.jswkw.top/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/" data-id="cl6u8qjh80001f8uv5zjkem0z" data-title="gitlab分支管理实践" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-常用的Linux命令" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/08/01/%E5%B8%B8%E7%94%A8%E7%9A%84Linux%E5%91%BD%E4%BB%A4/" class="article-date">
@@ -180,45 +532,6 @@
 
 
   
-    <article id="post-test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2022/07/25/test/" class="article-date">
-  <time class="dt-published" datetime="2022-07-25T15:22:06.000Z" itemprop="datePublished">2022-07-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2022/07/25/test/">test</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>##测试</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.jswkw.top/2022/07/25/test/" data-id="cl60wf57p0000b4uv5izf6fmu" data-title="test" class="article-share-link">分享</a>
-      
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
 
 
 </section>
@@ -229,7 +542,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">分类</h3>
     <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%81%8C%E5%9C%BA%E4%B8%8E%E7%AE%A1%E7%90%86/">职场与管理</a></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%B7%A5%E5%85%B7/">技术工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%81%8C%E5%9C%BA%E4%B8%8E%E7%AE%A1%E7%90%86/">职场与管理</a></li></ul>
     </div>
   </div>
 
@@ -239,7 +552,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%91%BD%E4%BB%A4/" rel="tag">Linux命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%A1%E7%90%86/" rel="tag">管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%91%BD%E4%BB%A4/" rel="tag">Linux命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%A1%E7%90%86/" rel="tag">管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
     </div>
   </div>
 
@@ -249,7 +562,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">Linux命令</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" style="font-size: 10px;">学习方法</a> <a href="/tags/%E7%AE%A1%E7%90%86/" style="font-size: 10px;">管理</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 10px;">转载</a>
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Linux%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">Linux命令</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" style="font-size: 10px;">学习方法</a> <a href="/tags/%E7%AE%A1%E7%90%86/" style="font-size: 10px;">管理</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 10px;">转载</a>
     </div>
   </div>
 
@@ -271,15 +584,19 @@
       <ul>
         
           <li>
+            <a href="/2022/08/15/Git%E6%97%A5%E5%BF%97%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">Git日志提交规范</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/">gitlab分支管理实践</a>
+          </li>
+        
+          <li>
             <a href="/2022/08/01/%E5%B8%B8%E7%94%A8%E7%9A%84Linux%E5%91%BD%E4%BB%A4/">常用的Linux命令</a>
           </li>
         
           <li>
             <a href="/2022/07/27/%E5%BE%B7%E9%B2%81%E5%85%8B%E8%B0%88%E3%80%90%E8%87%AA%E6%88%91%E7%AE%A1%E7%90%86%E3%80%91%E2%80%94%E2%80%94%E3%80%8A%E5%93%88%E4%BD%9B%E5%95%86%E4%B8%9A%E8%AF%84%E8%AE%BA%E3%80%8B%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%8F%97%E6%AC%A2%E8%BF%8E%E7%9A%84%E6%96%87%E7%AB%A0/">德鲁克谈【自我管理】——《哈佛商业评论》史上最受欢迎的文章</a>
-          </li>
-        
-          <li>
-            <a href="/2022/07/25/test/">test</a>
           </li>
         
       </ul>

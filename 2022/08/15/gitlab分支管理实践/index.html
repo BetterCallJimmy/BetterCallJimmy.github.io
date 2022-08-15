@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>gitlab分支管理实践 | Jimmy&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Gitlab分支管理实践 整体流程图    分支规约     分支 分支命名 分支描述    功能开发分支 origin&#x2F;feature_${feature} 1. 用于承载具体的功能开发，基于最新的master分支检出1. 命名规范：feature_{日期}_{功能}。如：feature_20220809_login   开发集成分支 origin&#x2F;develop 1. 在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gitlab分支管理实践">
+<meta property="og:url" content="https://blog.jswkw.top/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="Jimmy&#39;s Blog">
+<meta property="og:description" content="Gitlab分支管理实践 整体流程图    分支规约     分支 分支命名 分支描述    功能开发分支 origin&#x2F;feature_${feature} 1. 用于承载具体的功能开发，基于最新的master分支检出1. 命名规范：feature_{日期}_{功能}。如：feature_20220809_login   开发集成分支 origin&#x2F;develop 1. 在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.jswkw.top/RackMultipart20220815-1-lv4jgj_html_6a4f1b8b5ada7b41.gif">
+<meta property="og:image" content="https://blog.jswkw.top/RackMultipart20220815-1-lv4jgj_html_5f80dc7b858dcfe5.png">
+<meta property="og:image" content="https://blog.jswkw.top/RackMultipart20220815-1-lv4jgj_html_a1c56e63bc13fc60.png">
+<meta property="og:image" content="https://blog.jswkw.top/RackMultipart20220815-1-lv4jgj_html_9589eb41dc8925c4.png">
+<meta property="article:published_time" content="2022-08-15T02:10:33.000Z">
+<meta property="article:modified_time" content="2022-08-15T02:59:13.329Z">
+<meta property="article:author" content="Jimmy Liu">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.jswkw.top/RackMultipart20220815-1-lv4jgj_html_6a4f1b8b5ada7b41.gif">
+  
+    <link rel="alternate" href="/atom.xml" title="Jimmy's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Jimmy&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">记录</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.jswkw.top"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-gitlab分支管理实践" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/" class="article-date">
+  <time class="dt-published" datetime="2022-08-15T02:10:33.000Z" itemprop="datePublished">2022-08-15</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%B7%A5%E5%85%B7/">技术工具</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      gitlab分支管理实践
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p><img src="/RackMultipart20220815-1-lv4jgj_html_6a4f1b8b5ada7b41.gif" alt="Shape1"></p>
+<h1 id="Gitlab分支管理实践"><a href="#Gitlab分支管理实践" class="headerlink" title="Gitlab分支管理实践"></a><strong>Gitlab分支管理实践</strong></h1><ol>
+<li><strong>整体流程图</strong></li>
+</ol>
+<p><img src="/RackMultipart20220815-1-lv4jgj_html_5f80dc7b858dcfe5.png"></p>
+<ol start="2">
+<li><strong>分支规约</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>分支</strong></th>
+<th><strong>分支命名</strong></th>
+<th><strong>分支描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>功能开发分支</td>
+<td>origin&#x2F;feature_${feature}</td>
+<td>1. 用于承载具体的功能开发，基于最新的master分支检出<br>1. 命名规范：feature_{日期}_{功能}。如：feature_20220809_login</td>
+</tr>
+<tr>
+<td>开发集成分支</td>
+<td>origin&#x2F;develop</td>
+<td>1. 在开发环境集成各个功能分支，用于开发自测或联调</td>
+</tr>
+<tr>
+<td>测试&#x2F;发布集成分支</td>
+<td>origin&#x2F;release_{release_date}</td>
+<td>1. 在测试环境集成各个功能分支，用于测试人员测试<br>2. UAT环境验收（部分功能）：如果需要提前验收部分功能，则部署到UAT环境验收<br>3. 可能同时存在多个（即n * release），支持多版本并行测试（需要多套测试环境）<br>4. 命名规范：release_{发布日期}。如：release_20220801、release_20220801_1（部分功能无法上线，则重新检出）</td>
+</tr>
+<tr>
+<td>热修复分支</td>
+<td>origin&#x2F;hotfix_${hotfix}</td>
+<td>1. 用于修复生产环境Bug，基于master分支或指定Tag版本检出<br>2. 命名规范：hotfix_{日期}_{修复功能}。如：hotfix_20220801_loginBug</td>
+</tr>
+<tr>
+<td>主干分支</td>
+<td>origin&#x2F;master</td>
+<td>1. master分支代表项目的基线，不允许直接修改<br>2. UAT环境验收（全部功能）：全部功能测试通过后，将release_xxx合并到master分支，部署master到UAT环境验收<br>3. 生产环境发布：基于当前master分支打tag，审批发布上线<br>4. Tag命名规范：v{版本号}。如：v1.0.1</td>
+</tr>
+</tbody></table>
+<ol start="3">
+<li><strong>常规流程</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>序号</strong></th>
+<th><strong>阶段</strong></th>
+<th><strong>Gitlab</strong> <strong>角色</strong></th>
+<th><strong>组织角色</strong></th>
+<th><strong>操作</strong> <strong>&#x2F;</strong> <strong>事项</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>迭代开始</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>基于最新master检出新的发布分支：release_xxx（可以多个）</td>
+</tr>
+<tr>
+<td>Developers</td>
+<td>开发人员</td>
+<td>基于最新master检出新的开发分支：feature_xxx（多人可共用一个）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td>开发阶段</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>在feature分支开发，开发完成后，将feature分支合并到develop分支，部署develop到开发环境自测或联调</td>
+</tr>
+<tr>
+<td>3</td>
+<td>提测阶段</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>在Gitlab发起Merge Request，合并到release_xxx分支</td>
+</tr>
+<tr>
+<td>4</td>
+<td>代码审查&amp;合并</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>完成Code Review并合并到release_xxx分支</td>
+</tr>
+<tr>
+<td>5</td>
+<td>测试阶段</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>部署release_xxx分支到测试环境测试（支持多版本并行测试，需要多套测试环境）</td>
+</tr>
+<tr>
+<td>6</td>
+<td>UAT验收</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>将release_xxx合并到master，部署master到UAT环境</td>
+</tr>
+<tr>
+<td>Other</td>
+<td>产品或业务</td>
+<td>产品或业务在UAT环境验收</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>发布上线</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>基于当前master分支打tag，发起生产环境部署审批，完成发布上线</td>
+</tr>
+<tr>
+<td>8</td>
+<td>收尾阶段</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>将master分支合并到develop分支以及下一发布分支或开发分支（如果存在的话）</td>
+</tr>
+</tbody></table>
+<ol start="4">
+<li><strong>热修复流程</strong></li>
+</ol>
+<table>
+<thead>
+<tr>
+<th><strong>序号</strong></th>
+<th><strong>阶段</strong></th>
+<th><strong>Gitlab角色</strong></th>
+<th><strong>组织角色</strong></th>
+<th><strong>操作</strong> <strong>&#x2F;</strong> <strong>事项</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>开发修复</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>基于当前master检出热修复分支hotfix_xxx，修复后合并到develop分支，部署develop到开发环境自测或联调</td>
+</tr>
+<tr>
+<td>2</td>
+<td>开发提测</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>通知测试人员部署hotfix_xxx分支测试</td>
+</tr>
+<tr>
+<td>3</td>
+<td>测试阶段</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>部署hotfix_xxx分支到测试环境测试</td>
+</tr>
+<tr>
+<td>4</td>
+<td>合并请求</td>
+<td>Developers</td>
+<td>开发人员</td>
+<td>在Gitlab发起Merge Request，合并到master分支</td>
+</tr>
+<tr>
+<td>5</td>
+<td>代码审查&amp;合并</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>完成Code Review并合并到master分支</td>
+</tr>
+<tr>
+<td>6</td>
+<td>UAT验收</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>部署master分支到UAT环境验收</td>
+</tr>
+<tr>
+<td></td>
+<td>Other</td>
+<td>产品或业务</td>
+<td>产品或业务在UAT环境验收</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td>发布上线</td>
+<td>Maintainer</td>
+<td>测试人员</td>
+<td>基于当前master分支打tag，发起生产环境部署审批，完成发布上线</td>
+</tr>
+<tr>
+<td>8</td>
+<td>收尾阶段</td>
+<td>Maintainer</td>
+<td>开发组长&#x2F;SA</td>
+<td>将master分支合并到develop分支以及下一发布分支或开发分支（如果存在的话）</td>
+</tr>
+</tbody></table>
+<ol start="5">
+<li><strong>规约</strong></li>
+</ol>
+<p>5.1 <strong>Git</strong>  <strong>提交日志</strong></p>
+<ol>
+<li><p>Git提交必须编写commit message，否则不允许提交</p>
+</li>
+<li><p>Git提交日志必须符合【<a target="_blank" rel="noopener" href="https://wiki.szzhijing.com/pages/viewpage.action?pageId=24383064"><strong>Git</strong>** 日志规范**</a><strong>】</strong>，否则不允许合并（直接打回Merge Request）</p>
+</li>
+</ol>
+<p>5.2 <strong>版本命名规范</strong></p>
+<ol>
+<li><p>版本号规范：采用GNU风格版本号，参考【<a target="_blank" rel="noopener" href="https://wiki.szzhijing.com/pages/viewpage.action?pageId=21576376"><strong>版本命名规范</strong></a>】。第三位作为特性或修复版本，如1.0.1、1.0.2…</p>
+</li>
+<li><p>Tag命名规范：v{版本号}，如：v1.0.1</p>
+</li>
+</ol>
+<p>5.3 <strong>分支合并规范</strong></p>
+<ol>
+<li><p>【禁止】将测试发布分支release_xxx和develop分支合并回feature分支</p>
+</li>
+<li><p>【推荐】每次发版后，及时将master合并回develop和feature分支</p>
+</li>
+<li><p>【推荐】feature分支合并到master并上线后即可删除</p>
+</li>
+<li><p><strong>项目设置</strong></p>
+</li>
+</ol>
+<p>6.1 <strong>角色分配</strong></p>
+<ol>
+<li>项目组长统一分配组员角色，指定Maintainer角色人员（测试人员全部设置为Maintainer）</li>
+</ol>
+<p>6.2 <strong>分支保护</strong></p>
+<ol>
+<li><p>测试&#x2F;发布分支（release_*）：只允许项目maintainer合并和推送</p>
+</li>
+<li><p>生产分支（master）：只允许项目maintainer合并和推送</p>
+</li>
+</ol>
+<p><img src="/RackMultipart20220815-1-lv4jgj_html_a1c56e63bc13fc60.png"></p>
+<p>6.3 <strong>Tag保护</strong></p>
+<ol>
+<li>只允许项目Maintainer能创建tag（进而触发生产环境审批&#x2F;发布）</li>
+</ol>
+<p><img src="/RackMultipart20220815-1-lv4jgj_html_9589eb41dc8925c4.png"></p>
+<ol start="7">
+<li><strong>常见问题</strong></li>
+</ol>
+<p>1、如何解决多个功能，需要先后发布到UAT环境验收的问题？</p>
+<p>方案：直接将当前迭代发布分支release_xxx，部署到UAT环境验收</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.jswkw.top/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/" data-id="cl6u8qjh80001f8uv5zjkem0z" data-title="gitlab分支管理实践" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/08/15/Git%E6%97%A5%E5%BF%97%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          Git日志提交规范
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/01/%E5%B8%B8%E7%94%A8%E7%9A%84Linux%E5%91%BD%E4%BB%A4/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">常用的Linux命令</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%B7%A5%E5%85%B7/">技术工具</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%81%8C%E5%9C%BA%E4%B8%8E%E7%AE%A1%E7%90%86/">职场与管理</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Git/" rel="tag">Git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux%E5%91%BD%E4%BB%A4/" rel="tag">Linux命令</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" rel="tag">学习方法</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%AE%A1%E7%90%86/" rel="tag">管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Git/" style="font-size: 10px;">Git</a> <a href="/tags/Linux%E5%91%BD%E4%BB%A4/" style="font-size: 10px;">Linux命令</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/%E5%AD%A6%E4%B9%A0%E6%96%B9%E6%B3%95/" style="font-size: 10px;">学习方法</a> <a href="/tags/%E7%AE%A1%E7%90%86/" style="font-size: 10px;">管理</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 10px;">转载</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">八月 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">七月 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/15/Git%E6%97%A5%E5%BF%97%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/">Git日志提交规范</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/15/gitlab%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/">gitlab分支管理实践</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/01/%E5%B8%B8%E7%94%A8%E7%9A%84Linux%E5%91%BD%E4%BB%A4/">常用的Linux命令</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/27/%E5%BE%B7%E9%B2%81%E5%85%8B%E8%B0%88%E3%80%90%E8%87%AA%E6%88%91%E7%AE%A1%E7%90%86%E3%80%91%E2%80%94%E2%80%94%E3%80%8A%E5%93%88%E4%BD%9B%E5%95%86%E4%B8%9A%E8%AF%84%E8%AE%BA%E3%80%8B%E5%8F%B2%E4%B8%8A%E6%9C%80%E5%8F%97%E6%AC%A2%E8%BF%8E%E7%9A%84%E6%96%87%E7%AB%A0/">德鲁克谈【自我管理】——《哈佛商业评论》史上最受欢迎的文章</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Jimmy Liu<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
